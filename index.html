@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="LumiBench: Benchmarking Illumination Robustness in Robotic Manipulation Policies." />
+  <meta name="theme-color" content="#f7f5f1" />
+  <title>LumiBench | Illumination Robustness Benchmark</title>
+  <link rel="icon" href="assets/lumibench-mark.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header" id="top">
+    <nav class="nav shell" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="LumiBench home">
+        <img src="assets/lumibench-mark.svg" alt="" />
+        <span>LumiBench</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <div class="nav-links">
+        <a href="#abstract">Abstract</a>
+        <a href="#benchmark">Benchmark</a>
+        <a href="#severity">Severity</a>
+        <a href="#results">Results</a>
+        <a href="#real-world">Real World</a>
+        <a href="#citation">Citation</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="hero-copy">
+        <div class="eyebrow">Illumination-Centric Diagnostic Benchmark</div>
+        <h1>LumiBench</h1>
+        <p class="hero-subtitle">Benchmarking Illumination Robustness in Robotic Manipulation Policies</p>
+        <!-- Author/affiliation block intentionally omitted for the current anonymized manuscript. -->
+        <div class="hero-actions">
+          <a class="button primary" href="assets/LumiBench.pdf" target="_blank" rel="noopener">↗ Paper PDF</a>
+          <a class="button" href="#benchmark">◎ Benchmark</a>
+          <span class="button disabled" aria-disabled="true">&lt;/&gt; Code · Coming Soon</span>
+        </div>
+        <p class="hero-note">A controlled, mechanism-structured evaluation of how lighting changes alter robot-policy behavior.</p>
+      </div>
+
+      <div class="hero-visual panel">
+        <img src="assets/overview.webp" alt="LumiBench overview with illumination taxonomy, simulation conditions, severity control, and real-world evaluations" />
+        <button class="zoom-button" data-lightbox="assets/overview.webp">Click to enlarge</button>
+      </div>
+
+      <div class="stat-row" aria-label="Benchmark summary">
+        <div class="stat"><strong>5</strong><span>illumination mechanisms</span></div>
+        <div class="stat"><strong>9</strong><span>simulated perturbations</span></div>
+        <div class="stat"><strong>5 × 10</strong><span>policies × RoboTwin tasks</span></div>
+        <div class="stat"><strong>Real</strong><span>ARX physical validation</span></div>
+      </div>
+    </section>
+
+    <section class="section shell" id="abstract">
+      <div class="section-kicker">Motivation</div>
+      <h2>Abstract</h2>
+      <div class="abstract-grid">
+        <div class="prose large">
+          <p>Illumination shifts can substantially degrade robotic manipulation policies, yet existing benchmarks typically treat lighting as a single perturbation factor. <strong>LumiBench</strong> instead organizes illumination variation by its dominant physical mechanism and evaluates it through paired nominal–perturbed rollouts.</p>
+          <p>For representative mechanisms, LumiBench adds within-condition severity sweeps to distinguish sensitivity to perturbation onset from degradation under increasing strength. The benchmark is instantiated in RoboTwin 2.0, evaluates five representative policy families across ten tasks, and is complemented by controlled physical experiments.</p>
+        </div>
+        <div class="feature-stack">
+          <article class="feature-card">
+            <span>01</span>
+            <h3>Mechanism-Structured</h3>
+            <p>Intensity, chromaticity, spatial non-uniformity, temporal variation, and dynamic shadows.</p>
+          </article>
+          <article class="feature-card">
+            <span>02</span>
+            <h3>Paired Evaluation</h3>
+            <p>Task semantics, geometry, robot state, camera setup, checkpoint, and initialization are held fixed while illumination changes.</p>
+          </article>
+          <article class="feature-card">
+            <span>03</span>
+            <h3>Severity + Physical Validation</h3>
+            <p>Ordered severity sweeps expose response regimes, while controlled real-world trials test whether selected vulnerabilities persist.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tinted" id="benchmark">
+      <div class="shell">
+        <div class="section-kicker">Evaluation Space</div>
+        <h2>Benchmark Design</h2>
+        <p class="section-lead">LumiBench treats robustness as a controlled intervention problem: what changes when the illumination condition changes, and everything else is kept as constant as possible?</p>
+
+        <div class="mechanism-grid">
+          <article class="mechanism"><div class="mechanism-icon">☀</div><h3>Intensity</h3><p>Global illumination strength.</p><div class="chips"><span>Dark</span></div></article>
+          <article class="mechanism"><div class="mechanism-icon">◐</div><h3>Chromaticity</h3><p>Light-source color characteristics.</p><div class="chips"><span>Warm</span><span>Cold</span></div></article>
+          <article class="mechanism"><div class="mechanism-icon">◫</div><h3>Spatial</h3><p>Non-uniform illumination structure.</p><div class="chips"><span>Random</span><span>Spot</span><span>Grating</span></div></article>
+          <article class="mechanism"><div class="mechanism-icon">↻</div><h3>Temporal</h3><p>Time-varying illumination.</p><div class="chips"><span>Strobe</span></div></article>
+          <article class="mechanism"><div class="mechanism-icon">◒</div><h3>Shadow</h3><p>Geometry-coupled moving shadows.</p><div class="chips"><span>Moving Shadow</span></div></article>
+        </div>
+
+        <div class="benchmark-steps">
+          <article><span>01</span><h3>Broad illumination evaluation</h3><p>One nominal Base condition plus nine controlled illumination perturbations across the five mechanisms. Disco Lighting serves as a composite stress condition.</p></article>
+          <article><span>02</span><h3>Severity-controlled evaluation</h3><p>Dark, Cold, Spot, and Strobe are swept over three ordered severity levels with physically interpretable controls.</p></article>
+          <article><span>03</span><h3>Controlled physical evaluation</h3><p>Selected illumination conditions are recreated on an ARX X5 platform to test whether simulation-identified sensitivity patterns persist.</p></article>
+        </div>
+
+        <div class="gallery-head">
+          <div><div class="section-kicker small">Simulation</div><h3>Illumination Conditions</h3></div>
+          <p>Nine scene-level interventions; no image-space post-processing.</p>
+        </div>
+        <div class="condition-grid">
+          <figure><img src="assets/conditions/dark.webp" alt="Dark illumination condition" /><figcaption><strong>Dark</strong><span>Intensity</span></figcaption></figure>
+          <figure><img src="assets/conditions/warm.webp" alt="Warm illumination condition" /><figcaption><strong>Warm</strong><span>Chromaticity</span></figcaption></figure>
+          <figure><img src="assets/conditions/cold.webp" alt="Cold illumination condition" /><figcaption><strong>Cold</strong><span>Chromaticity</span></figcaption></figure>
+          <figure><img src="assets/conditions/random.webp" alt="Random spatial lighting condition" /><figcaption><strong>Random</strong><span>Spatial</span></figcaption></figure>
+          <figure><img src="assets/conditions/spot.webp" alt="Spot lighting condition" /><figcaption><strong>Spot</strong><span>Spatial</span></figcaption></figure>
+          <figure><img src="assets/conditions/grating.webp" alt="Grating lighting condition" /><figcaption><strong>Grating</strong><span>Spatial</span></figcaption></figure>
+          <figure><img src="assets/conditions/disco.webp" alt="Disco lighting condition" /><figcaption><strong>Disco Lighting</strong><span>Composite</span></figcaption></figure>
+          <figure><img src="assets/conditions/strobe.webp" alt="Strobe illumination condition" /><figcaption><strong>Strobe</strong><span>Temporal</span></figcaption></figure>
+          <figure><img src="assets/conditions/moving-shadow.webp" alt="Moving shadow condition" /><figcaption><strong>Moving Shadow</strong><span>Shadow</span></figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="severity">
+      <div class="section-kicker">Ordered Perturbation Strength</div>
+      <h2>Severity-Controlled Evaluation</h2>
+      <p class="section-lead">The benchmark separates the first cost of introducing a perturbation from additional degradation as that perturbation becomes stronger.</p>
+
+      <div class="severity-layout">
+        <div class="severity-controls panel">
+          <div class="tabs" role="tablist" aria-label="Severity perturbation selector">
+            <button class="tab active" data-severity="dark" role="tab">Dark</button>
+            <button class="tab" data-severity="cold" role="tab">Cold</button>
+            <button class="tab" data-severity="spot" role="tab">Spot</button>
+            <button class="tab" data-severity="strobe" role="tab">Strobe</button>
+          </div>
+          <div id="severity-description" class="severity-description"></div>
+          <div id="severity-levels" class="severity-levels"></div>
+        </div>
+        <div class="severity-chart panel">
+          <div class="chart-head"><h3>Mean success rate across five policies × ten tasks</h3><span id="severity-chart-name">Dark</span></div>
+          <div class="mini-chart" id="mini-chart" aria-label="Severity success-rate chart"></div>
+          <p class="chart-note">L0 is Base. L1–L3 are ordered within each mechanism and are not assumed to be quantitatively comparable across mechanisms.</p>
+        </div>
+      </div>
+
+      <div class="figure-card panel">
+        <img src="assets/severity_curves.webp" alt="Per-policy success-rate changes under Dark, Cold, Spot and Strobe severity sweeps" />
+        <div class="figure-caption"><strong>Policy-specific severity response.</strong> The manuscript reports progressive, onset-dominated, and strongly policy-specific response patterns.</div>
+      </div>
+    </section>
+
+    <section class="section dark-section" id="results">
+      <div class="shell">
+        <div class="section-kicker">Evaluation</div>
+        <h2>Illumination Robustness Is Not a Single Number</h2>
+        <p class="section-lead">Different policies fail under different lighting mechanisms, and nominal task success does not reliably predict illumination robustness.</p>
+
+        <div class="figure-card light-panel">
+          <img src="assets/robustness_overview.webp" alt="Illumination difficulty and policy-specific sensitivity heatmap" />
+          <button class="zoom-button inverse" data-lightbox="assets/robustness_overview.webp">Click to enlarge</button>
+        </div>
+
+        <div class="finding-grid">
+          <article><strong>25.7 pp</strong><h3>Grating</h3><p>Largest mean success-rate drop under the canonical benchmark settings.</p></article>
+          <article><strong>24.0 pp</strong><h3>Disco</h3><p>Composite chromatic, spatial, and temporal variation is also strongly disruptive.</p></article>
+          <article><strong>18.5 pp</strong><h3>Spot</h3><p>Localized spatial non-uniformity causes a large average drop and is reproduced in physical tests.</p></article>
+          <article><strong>0.6 pp</strong><h3>Moving Shadow</h3><p>Nearly harmless on average at the selected canonical setting, despite other lighting shifts being damaging.</p></article>
+        </div>
+
+        <div class="table-card light-panel">
+          <div class="table-card-head">
+            <div><div class="section-kicker small">Policy Summary</div><h3>Base performance and mean retention</h3></div>
+            <p>Mean retention is the average fraction of Base performance retained across the nine perturbations.</p>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Policy</th><th>Base SR (%)</th><th>Mean retention (%)</th><th>Example sensitivity</th></tr></thead>
+              <tbody>
+                <tr><td>RDT</td><td>42.6</td><td>81.3</td><td>Spatial + composite conditions</td></tr>
+                <tr><td>OpenVLA-OFT</td><td>46.7</td><td>88.3</td><td>Broad, relatively mild sensitivity</td></tr>
+                <tr><td>FastWAM</td><td>54.3</td><td>46.1</td><td>Large drops across many mechanisms</td></tr>
+                <tr><td>π<sub>0.5</sub></td><td>73.9</td><td>90.4</td><td>Mainly spatial non-uniformity</td></tr>
+                <tr><td>LingBot-VA</td><td>48.7</td><td>79.0</td><td>Temporal / composite sensitivity</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="table-note">These differences are observational benchmark results; the evaluation does not isolate architecture, pretraining data, or fine-tuning procedure as causal factors.</p>
+        </div>
+
+        <div class="qualitative-grid">
+          <div class="qualitative-copy">
+            <div class="section-kicker small">Qualitative Example</div>
+            <h3>Lighting changes can alter closed-loop behavior</h3>
+            <p>On Adjust Bottle, matched initial conditions under Base and Disco Lighting lead to visibly different end-effector trajectories, illustrating that illumination shift can propagate from perception into action.</p>
+          </div>
+          <div class="figure-card light-panel compact">
+            <img src="assets/trajectory_base_vs_disco.webp" alt="End-effector trajectories under Base and Disco Lighting" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="real-world">
+      <div class="section-kicker">Controlled Physical Evaluation</div>
+      <h2>Selected Vulnerabilities Persist Under Real Lighting</h2>
+      <p class="section-lead">Physical tests use an ARX X5 platform, fixed camera poses, disabled automatic exposure and white balance, and 16 trials per policy–task–condition configuration.</p>
+
+      <div class="real-gallery">
+        <figure><img src="assets/realworld/base.webp" alt="Physical Base illumination" /><figcaption>Base</figcaption></figure>
+        <figure><img src="assets/realworld/warm.webp" alt="Physical Warm illumination" /><figcaption>Warm</figcaption></figure>
+        <figure><img src="assets/realworld/dark.webp" alt="Physical Dark illumination" /><figcaption>Dark</figcaption></figure>
+        <figure><img src="assets/realworld/spot.webp" alt="Physical Spot illumination" /><figcaption>Spot</figcaption></figure>
+        <figure><img src="assets/realworld/strobe.webp" alt="Physical localized Strobe illumination" /><figcaption>Localized Strobe</figcaption></figure>
+      </div>
+
+      <div class="real-summary-grid">
+        <article class="panel"><div class="metric big">0/16</div><h3>FastWAM · Adjust Bottle</h3><p>After 16/16 Base success, all trials fail under Dark, Spot, and localized Strobe in the reported physical setup.</p></article>
+        <article class="panel"><div class="metric big">0%</div><h3>π<sub>0.5</sub> · Severe Spot</h3><p>Severe Spot reduces all three evaluated π<sub>0.5</sub> physical tasks to 0/16 success.</p></article>
+        <article class="panel caveat"><div class="metric big">≠</div><h3>Strobe caveat</h3><p>The physical Strobe uses intermittent switching of the same localized light as Spot, so it is a controlled stress condition—not a mechanism-matched realization of simulated global Strobe.</p></article>
+      </div>
+
+      <div class="table-card panel">
+        <div class="table-card-head"><div><div class="section-kicker small">Physical Trials</div><h3>Successful trials out of 16</h3></div><button class="text-button" data-lightbox="assets/realworld_table.webp">View manuscript table ↗</button></div>
+        <div class="table-wrap">
+          <table class="dense">
+            <thead><tr><th>Policy</th><th>Task</th><th>Base</th><th>Warm</th><th>Dark-M</th><th>Dark-S</th><th>Spot-M</th><th>Spot-S</th><th>Strobe-M</th><th>Strobe-S</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="3">π<sub>0.5</sub></td><td>Adjust Bottle</td><td>16/16</td><td>14/16</td><td>14/16</td><td>13/16</td><td>1/16</td><td>0/16</td><td>4/16</td><td>0/16</td></tr>
+              <tr><td>Beat Block Hammer</td><td>14/16</td><td>15/16</td><td>1/16</td><td>0/16</td><td>0/16</td><td>0/16</td><td>1/16</td><td>0/16</td></tr>
+              <tr><td>Stack Cube</td><td>10/16</td><td>12/16</td><td>8/16</td><td>0/16</td><td>0/16</td><td>0/16</td><td>0/16</td><td>0/16</td></tr>
+              <tr class="divider"><td rowspan="3">FastWAM</td><td>Adjust Bottle</td><td>16/16</td><td>14/16</td><td>0/16</td><td>0/16</td><td>0/16</td><td>0/16</td><td>0/16</td><td>0/16</td></tr>
+              <tr><td>Beat Block Hammer</td><td>16/16</td><td>16/16</td><td>6/16</td><td>7/16</td><td>0/16</td><td>0/16</td><td>0/16</td><td>0/16</td></tr>
+              <tr><td>Stack Cube</td><td>0/16</td><td>0/16</td><td>0/16</td><td>0/16</td><td>0/16</td><td>0/16</td><td>0/16</td><td>0/16</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-note">Stack Cube for FastWAM is at 0/16 already under Base and therefore does not support a meaningful illumination-robustness comparison.</p>
+      </div>
+    </section>
+
+    <section class="section tinted" id="citation">
+      <div class="shell citation-grid">
+        <div>
+          <div class="section-kicker">Reference</div>
+          <h2>Citation</h2>
+          <p>The current manuscript is anonymized, so the project page intentionally does not expose an author list or fabricate a public citation. Replace the citation block after the public version is released.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="assets/LumiBench.pdf" target="_blank" rel="noopener">Open current manuscript</a>
+          </div>
+        </div>
+        <div class="citation-card">
+          <div class="citation-top"><span>Public citation placeholder</span><button id="copy-title" class="text-button">Copy title</button></div>
+          <pre><code id="citation-title">LumiBench: Benchmarking Illumination Robustness in Robotic Manipulation Policies</code></pre>
+          <p>Author names, venue status, arXiv identifier, repository URL, and dataset URL can be filled in from one small configuration area in <code>index.html</code>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <a class="brand" href="#top"><img src="assets/lumibench-mark.svg" alt="" /><span>LumiBench</span></a>
+      <p>Illumination robustness for robotic manipulation · Static GitHub Pages site · layout inspired by the DreamTrajectory project page.</p>
+    </div>
+  </footer>
+
+  <dialog id="lightbox" class="lightbox">
+    <button class="lightbox-close" aria-label="Close">×</button>
+    <img id="lightbox-image" alt="Enlarged project figure" />
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
